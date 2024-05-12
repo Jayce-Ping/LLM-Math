@@ -1,0 +1,73 @@
+{
+    "DirectBooleanComputation":{
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Compute the value of the logic expression !(True || True).\nA: False\nQ: Compute the value of the logic expression (False && False && False && False) || (!(False && False) && !False && !False).\nA: True",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Compute the value of the logic expression !(True || True).\nA: Let's think step by step carefully. First, the value of (True || True) is True. Then, !(True || True) = !True. So the answer is False\nQ: Compute the value of the logic expression (False && False && False && False) || (!(False && False) && !False && !False).\nA: Let's think step by step carefully. First, the value of (False && False && False && False) is False. Then, (!(False && False) && !False && !False) = !False && !False && !False = True. Finally, we get False || True = True. So the answer is True.",
+        "Q" : "Compute the value of logic expression {Expression}."
+    },
+
+    "IndirectBooleanComputation":{
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Compute the value of the logic expression !(a || a), where a=True.\nA: False\nQ: Compute the value of the logic expression (a && b && a && b) || (!(a && b) && !b && !a), where a=False, b=False.\nA: True",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Compute the value of the logic expression !(a || a), where a=True.\nA: Let's think step by step. First, assign a to be True, !(a || a) = !(True || True). Then, True || True gives True. Finally, !True gives False. So the answer is False.\nQ: Compute the value of the logic expression (a && b && a && b) || (!(a && b) && !b && !a), where a=False, b=False.\nA: Let's think step by step. First, assign a=False and b=False. (a && b && a && b) || (!(a && b) && !b && !a) = (False && False && False && False) || (!(False && False) && !False && !False). Then, (False && False && False && False) = False and (!(False && False) && !False && !False) = !False && !False && !False = True. Finally, we get False || True = True. So the answer is True.",
+        "Q" : "Compute the value of {Expression}, where {Assignment}."
+    },
+
+    "SAT" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Give a choice of boolean variables (a, b) to make logic expression \"a || b\" yield True.\nA: (False, True)\nQ: Give a choice of boolean variables (a, b, c) to make logic expression \"!(a && !(b || c)) || b\" yield True.\nA: (True, False, True)",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Give a choice of boolean variables (a, b) to make logic expression \"a || b\" yield True.\nA: Let's think step by step. To make a || b yield True, only one of them to be True is required. So, a choice of variables is (False, True)\nQ: Give a choice of boolean variables (a, b, c) to make logic expression \"!(a && !(b || c)) || b\" yield True.\nA: Let's think step by step. To make !(a && !(b || c)) || b yield True, we can set b to be True, then, a and c can be chosen either True or False. So a choice of variables is (True, False, True).",
+        "Q" : "Give a choice of boolean variables ({Variables}) to make the logic expression \"{Expression}\" yield True."
+    },
+
+    "EquivalentQ" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Analyze wheter the logic expressions \"b || !a || c\" and \"!a || b || c || c\" are equivalent or not.\nA: Yes. They are equivalent.\nQ: Analyze wheter the logic expressions \"!(!(a && !b) && !b) && b && !b\" and \"(a && !b) || (!a && !a) || (!a && b)\" are equivalent or not.\nA: No. They are not equivalent.",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Analyze wheter the logic expressions \"b || !a || c\" and \"!a || b || c || c\" are equivalent or not.\nA: Let's think step by step. First, compute their DNF, which are both \"!a || b || c\". They have common DNF. So the answer is yes, they are equivalent.\nQ: Analyze wheter the logic expressions \"!(!(a && !b) && !b) && b && !b\" and \"(a && !b) || (!a && !a) || (!a && b)\" are equivalent or not.\nA: Let's think step by step. First, compute the DNF of these two expressions. The DNF of the first one is simply \"False\" and the second is \"!a || !b\", which is not always \"False\". Since they have different DNF, they are not equivalent.",
+        "Q" : "Analyze whether the logic expressions \"{Expression1}\" and \"{Expression2}\" are equivalent or not."
+    },
+
+    "DNF" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Convert the logic expression \"!((a && !b) || (!a && b) || c)\" to disjunctive normal form.\nA: (a && b && !c) || (!a && !b && !c)\nQ: Convert the logic expression \"(a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c) to disjunctive normal form.\nA: (a && b) || (a && c)",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Convert the logic expression \"!((a && !b) || (!a && b) || c)\" to disjunctive normal form.\nA: Let's think step by step. !((a && !b) || (!a && b) || c) = !(a && !b) && !(!a && b) && !c = (!a || b) && (a || !b) && !c = ((!a && a) || (!a && !b) || (a && b) || (b && !b)) && !c = ((!a && !b) || (a && b)) && !c = (a && b && !c) || (!a && !b && !c). So the answer is (a && b && !c) || (!a && !b && !c).\nQ: Convert the logic expression \"(a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c)\" to disjunctive normal form.\nA: Let's think step by step. (a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c) = (a && b) || (a && (!a || b || c)) || False) = (a && b) || (a && !a) || (a && b) || (a || c) = (a && b) || (a && c). So the answer is (a && b) || (a && c).",
+        "Q" : "Convert the logic expression \"{Expression}\" to disjunctive normal form."
+    },
+
+    "CNF" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Convert the logic expression \"!((a && !b) || (!a && b) || c)\" to conjunctive normal form.\nA: (!a || b) && (a || !b) && !c\nQ: Convert the logic expression \"(a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c)\" to conjunctive normal form.\nA: a && (b || c)",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Convert the logic expression \"!((a && !b) || (!a && b) || c)\" to conjunctive normal form.\nA: Let's think step by step. !((a && !b) || (!a && b) || c) = !(a && !b) && !(!a && b) && !c = (!a || b) && (a || !b) && !c. So the answer is (!a || b) && (a || !b) && !c.\nQ: Convert the logic expression \"(a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c)\" to conjunctive normal form.\nA: Let's think step by step. (a && b) || (a && !(a && !b && !c)) || (b && a && !b && !c) = (a && b) || (a && (!a || b || c)) || False) = (a && b) || (a && !a) || (a && b) || (a || c) = (a && b) || (a && c) = a && (b || c). So the answer is a && (b || c).",
+        "Q" : "Convert the logic expression \"{Expression}\" to conjunctive normal form."
+    },
+
+    "SATCount" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: How many combinations of varibales values to make the logic expression \"a || (a && b)\" yield True.\nA: 2\nQ: How many combinations of varibales values to make the logic expression \"(a && !b) || (!b && ((a && !b) || (!a && b) || c))\" yield True.\nA: 3",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: How many combinations of varibales values to make the logic expression \"a || (a && b)\" yield True.\nA: Let's think step by step. Enumerate all possible combinations of (a, b) values - (False, False), (False, True), (True, False) and (True, True). There are two combinations (True, False) and (True, True) can make the logic expression \"a || (a && b)\" yield True. So the answer is 2.\nQ: How many combinations of varibales values to make the logic expression \"(a && !b) || (!b && ((a && !b) || (!a && b) || c))\" yield True.\nA: Let's think step by step. First, list all possible value combinations of variabls (a, b, c) - (False, False, False), (False, False, True), (False, True, False), (False, True, True), (True, False, False), (True, False, True), (True, True, False) and (True, True, True). There are 8 combiantions in total and only three of them - (False, False, True), (True, False, False) and (True, False, True) can make the expression yield True. So the answer is 3.",
+        "Q" : "How many combinations of varibales values to make the logic expression \"{Expression}\" yield True."
+    },
+
+    "TautologyQ" : {
+        "Zero-shot" : "",
+        "Few-shot" : "Q: Whether the logic expression \"a || !a || b\" is a taotology or not.\nA: Yes, it is a tautology.\nQ: Whether the logic expression \"b && !(a || !c)\" is a taotology or not.\nA: No, it is not a tautology.",
+        "LtM" : "Let's break down this problem.",
+        "CoT" : "Let's think step by step carefully.",
+        "Few-shot-CoT" : "Q: Whether the logic expression \"a || !a || b\" is a taotology or not.\nA: Let's think step by step. To test whether a || !a || b is a tautology, we need to test all possible combinations of variables values. From a || !a || b, whether a is True of False, it gives True whatever b is. So the expression gives True for all possible values of variables. Then, it is a tautology.\nQ: Whether the logic expression \"b && !(a || !c)\" is a taotology or not.\nA: Let's think step by step. First, from the expression, we know that the top operation is 'and'. Then, we know that if b is False, the expression yields False no matter what values of a and c. So, it is not a tautology.",
+        "Q" : "Whether the logic expression \"{Expression}\" is a taotology or not."
+    }
+}
