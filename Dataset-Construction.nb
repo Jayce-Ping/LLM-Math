@@ -2121,7 +2121,7 @@ Cell[BoxData[
 }, Closed]]
 }, Closed]]
 },
-WindowSize->{1141.2, 574.8},
+WindowSize->{1141.2, 579.6},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
 StyleDefinitions->"Default.nb",
